@@ -1,0 +1,161 @@
+@startuml
+' left to right direction
+' skinparam linetype ortho
+
+entity "person" as person {
+  * id : str (PK)
+  --
+  email : str
+  name : str
+}
+
+entity "project" as project {
+  * id : int (PK)
+  --
+  key : str (unique)
+  name : str
+  description : text
+  archived : bool
+  assignee_type : str
+  type_key : str
+  lead_id : str (FK)
+}
+
+entity "issue" as issue {
+  * id : int (PK)
+  --
+  key : str (unique)
+  assignee_id : str (FK)
+  creator_id : str (FK)
+  reporter_id : str (FK)
+  issue_type_id : int (FK)
+  priority_id : int (FK)
+  project_id : int (FK)
+  resolution_id : int (FK)
+  status_id : int (FK)
+  created_date : datetime
+  due_date : datetime
+  resolution_date : datetime
+  summary : str
+  description : text
+}
+
+entity "issuelink" as issuelink {
+  * id : int (PK)
+  --
+  type_id : int (FK)
+  inward_issue_id : int (FK)
+  outward_issue_id : int (FK)
+}
+
+entity "label" as label {
+  * id : int (PK)
+  --
+  issue_id : int (FK)
+  value : str
+}
+
+entity "attachment" as attachment {
+  * id : int (PK)
+  --
+  issue_id : int (FK)
+  author_id : str (FK)
+  created_date : datetime
+  file_name : str
+  file_size : int
+  local_path : str
+  mime_type : str
+}
+
+entity "comment" as comment {
+  * id : int (PK)
+  --
+  issue_id : int (FK)
+  author_id : str (FK)
+  updater_id : str (FK)
+  created_date : datetime
+  updated_date : datetime
+  body : text
+}
+
+entity "change" as change {
+  * id : int (PK)
+  --
+  issue_id : int (FK)
+  author_id : str (FK)
+  created_date : datetime
+  field : str
+  field_type : str
+  from_value : str
+  to_value : str
+}
+
+entity "status" as status {
+  * id : int (PK)
+  --
+  name : str
+}
+
+entity "workflow" as workflow {
+  * id : int (PK)
+  --
+  project_id : int (FK)
+  from_status_id : int (FK)
+  to_status_id : int (FK)
+}
+
+entity "resolution" as resolution {
+  * id : int (PK)
+  --
+  value : str
+}
+
+entity "priority" as priority {
+  * id : int (PK)
+  --
+  value : str
+}
+
+entity "issue_type" as issue_type {
+  * id : int (PK)
+  --
+  value : str
+}
+
+entity "issuelink_type" as issuelink_type {
+  * id : int (PK)
+  --
+  name : str
+  inward_name : str
+  outward_name : str
+}
+
+' Relationships
+person ||--o{ issue : "assignee"
+person ||--o{ issue : "creator"
+person ||--o{ issue : "reporter"
+person ||--o{ project : "lead"
+person ||--o{ attachment : "author"
+person ||--o{ comment : "author"
+person ||--o{ comment : "updater"
+person ||--o{ change : "author"
+
+project ||--o{ issue : "project"
+project ||--o{ workflow : "project"
+
+issue ||--o{ issuelink : "inward"
+issue ||--o{ issuelink : "outward"
+issue ||--o{ label : "issue"
+issue ||--o{ attachment : "issue"
+issue ||--o{ comment : "issue"
+issue ||--o{ change : "issue"
+
+issue_type ||--o{ issue : "issue_type"
+priority ||--o{ issue : "priority"
+resolution ||--o{ issue : "resolution"
+status ||--o{ issue : "status"
+status ||--o{ workflow : "from_status"
+status ||--o{ workflow : "to_status"
+issuelink_type ||--o{ issuelink : "type"
+
+@enduml
