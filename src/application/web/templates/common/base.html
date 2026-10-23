@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+
+</head>
+<body>
+
+    <header>
+        <div class="nav-left">
+            <div class="logo">Ticket System</div>
+            <ul class="nav-links">
+                <li>Dashboard</li>
+                <li>Projects</li>
+                <li>Issues</li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <span>Anonymous User</span>
+            <span style="font-size: 0.8rem; cursor: pointer;">Login</span>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- The Checkbox Hack for Sidebar -->
+        <input type="checkbox" id="sidebar-toggle">
+        
+        <!-- Column 1: Foldable Context Menu -->
+        <aside class="column sidebar">
+            <label for="sidebar-toggle" class="toggle-btn">☰</label>
+            <div class="sidebar-content">
+                <p><span>📁 Projects</span></p><br>
+                <p><span>📋 Backlog</span></p><br>
+                <p><span>🚀 Roadmap</span></p><br>
+                <p><span>⚙️ Settings</span></p>
+            </div>
+        </aside>
+
+        <!-- Container for the remaining 2 columns -->
+        <div class="content-wrapper">
+            
+            <!-- Column 2: Main Content (Dynamic Area) -->
+            <div class="column main-content" id="main">
+                <h2>Issue Details</h2>
+                <hr><br>
+                <div class="card">Issue #101: Implement User Authentication</div>
+                <div class="card">Issue #102: Fix CSS Grid bug in Sidebar</div>
+                <div class="card">Issue #103: Update Documentation</div>
+                <div class="card">Issue #104: API Endpoint Refactoring</div>
+                <div class="card">Issue #105: Add dark mode support</div>
+                <div class="card">Issue #106: Database migration script</div>
+                <!-- Adding many cards to demonstrate scrolling -->
+            </div>
+
+            <div class="resizer" id="resizer"></div>
+
+            <!-- Column 3: Right Sidebar (Dynamic Area) -->
+            <div class="column right-sidebar" id="content-right">
+                <h3>Activity</h3>
+                <hr><br>
+                <p><small>Yesterday</small></p>
+                <p>User A commented on #101</p>
+                <p>User B changed status to Done</p>
+                <br>
+                <p><small>2 days ago</small></p>
+                <p>Project created by Admin</p>
+            </div>
+
+        </div>
+    <script>
+        const container1 = document.getElementById('main');
+        const resizer = document.getElementById('resizer');
+        const container2 = document.getElementById('content-right');
+
+        let isResizing = false;
+
+        // 1. When mouse is pressed on the resizer
+        resizer.addEventListener('mousedown', function(e) {
+            isResizing = true;
+            // Add class to body to prevent text highlighting while dragging
+            document.body.classList.add('user-select-none');
+        });
+
+        // 2. When mouse moves (we attach this to 'window' so it doesn't glitch if mouse moves too fast)
+        window.addEventListener('mousemove', function(e) {
+            if (!isResizing) return;
+
+            // Calculate the new width
+            // We need the position of the container1 to know where the mouse is relative to the start
+            const containerRect = container1.getBoundingClientRect();
+            
+            // The position of the mouse relative to the left edge of the container1
+            const mouseX = e.clientX - containerRect.left;
+            
+            // We also need to subtract the width of Box 1 (which is constant at 200px)
+            // to find out how much space should be allocated to Box 1
+            const box1Width = 200;
+            const newWidth = mouseX - box1Width;
+
+            // Apply the new width to Box 2
+            if (newWidth > 50) { // Minimum width constraint
+                container1.style.width = newWidth + 'px';
+            }
+        });
+
+        // 3. When mouse is released
+        window.addEventListener('mouseup', function() {
+            isResizing = false;
+            document.body.classList.remove('user-select-none');
+        });
+    </script>
+    </div>
+</body>
+</html>

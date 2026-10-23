@@ -1,0 +1,184 @@
+ /* --- CSS VARIABLES & RESET --- */
+ :root {
+     --header-height: 50px;
+     --sidebar-width: 250px;
+     --sidebar-collapsed-width: 60px;
+     --bg-color: #f4f5f7;
+     --border-color: #dfe1e6;
+     --primary-blue: #0747a6;
+     --text-color: #172b4d;
+ }
+
+ * {
+     box-sizing: border-box;
+     margin: 0;
+     padding: 0;
+ }
+
+ body, html {
+     height: 100%;
+     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+     color: var(--text-color);
+     overflow: hidden; /* Prevents the main body from scrolling */
+ }
+
+ /* --- HEADER --- */
+ header {
+     height: var(--header-height);
+     background-color: var(--primary-blue);
+     color: white;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding: 0 20px;
+     position: fixed;
+     top: 0;
+     width: 100%;
+     z-index: 1000;
+ }
+
+ .nav-left, .nav-right {
+     display: flex;
+     align-items: center;
+     gap: 20px;
+ }
+
+ .logo {
+     font-weight: bold;
+     font-size: 1.2rem;
+     margin-right: 20px;
+ }
+
+ .nav-links {
+     display: flex;
+     gap: 15px;
+     list-style: none;
+ }
+
+ .nav-links li {
+     cursor: pointer;
+     font-size: 0.9rem;
+     opacity: 0.8;
+ }
+
+ .nav-links li:hover {
+     opacity: 1;
+ }
+
+ /* --- MAIN LAYOUT --- */
+ .app-container {
+     display: flex;
+     margin-top: var(--header-height);
+     height: calc(100vh - var(--header-height));
+     width: 100%;
+ }
+
+ /* --- COLUMN STYLES --- */
+ .column {
+     height: 100%;
+     overflow-y: auto; /* Enables individual scrollbars */
+     border-right: 1px solid var(--border-color);
+ }
+
+ /* --- FOLDABLE SIDEBAR --- */
+ #sidebar-toggle {
+     display: none; /* Hide the checkbox */
+ }
+
+ .sidebar {
+     width: var(--sidebar-collapsed-width);
+     background-color: white;
+     transition: width 0.3s ease;
+     flex-shrink: 0; /* Prevents sidebar from shrinking when content grows */
+     position: relative;
+ }
+
+ /* When checkbox is checked, expand sidebar */
+ #sidebar-toggle:checked ~ .sidebar {
+     width: var(--sidebar-width);
+ }
+
+ /* The Toggle Button (The Hamburger) */
+ .toggle-btn {
+     position: absolute;
+     right: 5px;
+     top: 10px;
+     cursor: pointer;
+     font-size: 1.2rem;
+     z-index: 10;
+     user-select: none;
+ }
+
+ .sidebar-content {
+     padding: 20px 10px;
+     white-space: nowrap; /* Prevents text from wrapping during animation */
+     opacity: 1;
+     transition: opacity 0.2s;
+ }
+
+ /* Hide text when sidebar is closed */
+ #sidebar-toggle:not(:checked) ~ .sidebar .sidebar-content span {
+     display: none;
+ }
+
+ /* --- CONTENT AREA --- */
+ .content-wrapper {
+     display: flex;
+     width: 100%;
+     flex: 1; /* Takes up all remaining space */
+     overflow: hidden;
+ }
+
+ .main-content {
+     flex: 2
+     display: flex; /* Makes the middle column wider */
+     background-color: white;
+     padding: 20px;
+ }
+
+ .right-sidebar {
+     flex: 1; /* Makes the right column smaller */
+     background-color: var(--bg-color);
+     padding: 20px;
+ }
+
+ /* --- PLACEHOLDER CONTENT --- */
+ .placeholder-box {
+     background: #eee;
+     margin-bottom: 15px;
+     border-radius: 4px;
+ }
+
+ .card {
+     padding: 20px;
+     border: 1px solid var(--border-color);
+     border-radius: 5px;
+     margin-bottom: 15px;
+ }
+
+ /* Scrollbar Styling (Optional, for cleaner look) */
+ ::-webkit-scrollbar {
+     width: 8px;
+ }
+ ::-webkit-scrollbar-track {
+     background: #f1f1f1;
+ }
+ ::-webkit-scrollbar-thumb {
+     background: #ccc;
+     border-radius: 4px;
+ }
+ ::-webkit-scrollbar-thumb:hover {
+     background: #999;
+ }
+
+/* The Draggable Handle (The Border) */
+.resizer {
+    width: 8px;
+    cursor: col-resize;
+    background-color: #2c3e50;
+    transition: background-color 0.2s;
+}
+
+.resizer:hover {
+    background-color: #e74c3c;
+}

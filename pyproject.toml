@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Ticket System"
+version = "0.1.0"
+description = "A hexagonal architecture ticket system combining Jira and Notion features."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Tobias Schäfer", email = "tobiassch@users.sourceforge.net" }
+]
+keywords = ["ticket", "hexagonal-architecture", "flask", "sqlalchemy"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GPL-3.0 License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "Flask>=3.0.0",
+    "SQLAlchemy>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black>=23.0.0",
+    "isort>=5.0.0",
+    "mypy>=1.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+explicit_package_bases = true
+mypy_path = "."
